@@ -53,25 +53,20 @@ module.exports = function signalkLogPlayer(app) {
       app.handleMessage(plugin.id, delta)
     })
 
-    _ultrasonic.on('status', (status) => {
+    _instance.on('status', (status) => {
       app.setProviderStatus(
         `${plugin.STATUS[status.status]}${status.data === '' ? '' : `: ${status.data}`}`
       )
     })
 
-    _ultrasonic.start()
+    _instance.start()
   }
 
   plugin.stop = function () {
-    if (_ultrasonic === null) {
+    if (_instance === null) {
       return
     }
-
-    // Tear-down
-    _ultrasonic.disconnect()
-    _ultrasonic.stop()
-    _ultrasonic.removeAllListeners()
-    _ultrasonic = null
+    _instance.stop()
   }
 
   return plugin
