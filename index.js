@@ -4,7 +4,6 @@ module.exports = function signalkLogPlayer(app) {
   const plugin = {}
   let _instance = null
 
-  plugin.status = LogPlayer.STATUS
   plugin.LogPlayer = LogPlayer
   plugin.id = 'signalk-log-player'
   plugin.name = 'Signal K Delta Log Player'
@@ -22,7 +21,7 @@ module.exports = function signalkLogPlayer(app) {
       path: {
         type: 'string',
         title: 'Absolute path to the log file folder',
-        default: '/signalk/logs',
+        default: '/signalk/deltalogs',
       },
     },
   }
@@ -34,7 +33,7 @@ module.exports = function signalkLogPlayer(app) {
 
     const opts = {
       setRate: 6,
-      path: '',
+      path: '/signalk/deltalogs',
     }
 
     if (options && typeof options === 'object') {
@@ -43,7 +42,7 @@ module.exports = function signalkLogPlayer(app) {
       }
 
       if (typeof options.path === 'string' && options.path.startsWith('/')) {
-        opts.setRate = options.path
+        opts.path = options.path
       }
     }
 
@@ -55,19 +54,11 @@ module.exports = function signalkLogPlayer(app) {
 
     _instance.on('status', (status) => {
       if (typeof status === 'string') {
-        if (plugin.STATUS.hasOwnProperty(status)) {
-          app.setProviderStatus(plugin.STATUS[status])
-        }
-
         return app.setProviderStatus(status)
       }
 
       if (status && typeof status === 'object' && status.hasOwnProperty('status')) {
-        let message = ''
-
-        if (plugin.STATUS.hasOwnProperty(status.status)) {
-          message += plugin.STATUS[status.status]
-        }
+        let message = status.status
 
         if (status.hasOwnProperty('data')) {
           message += ` - ${status.data}`
