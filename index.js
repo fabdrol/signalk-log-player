@@ -54,9 +54,27 @@ module.exports = function signalkLogPlayer(app) {
     })
 
     _instance.on('status', (status) => {
-      app.setProviderStatus(
-        `${plugin.STATUS[status.status]}${status.data === '' ? '' : `: ${status.data}`}`
-      )
+      if (typeof status === 'string') {
+        if (plugin.STATUS.hasOwnProperty(status)) {
+          app.setProviderStatus(plugin.STATUS[status])
+        }
+
+        return app.setProviderStatus(status)
+      }
+
+      if (status && typeof status === 'object' && status.hasOwnProperty('status')) {
+        let message = ''
+
+        if (plugin.STATUS.hasOwnProperty(status.status)) {
+          message += plugin.STATUS[status.status]
+        }
+
+        if (status.hasOwnProperty('data')) {
+          message += ` - ${status.data}`
+        }
+
+        app.setProviderStatus(message)
+      }
     })
 
     _instance.start()
