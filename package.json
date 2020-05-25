@@ -1,0 +1,20 @@
+{
+  "name": "signalk-log-player",
+  "version": "1.0.1",
+  "description": "A plugin that, given a folder of Signal K delta logs, replays them at a set rate",
+  "main": "index.js",
+  "scripts": {
+    "test": "DEBUG=signalk-log-p* node ./test/standalone",
+    "dev": "DEBUG=signalk-log-p* nodemon ./test/standalone",
+    "push": "npm publish --access public"
+  },
+  "keywords": [
+    "signalk-node-server-plugin"
+  ],
+  "author": "Fabian Tollenaar <fabian@decipher.industries> (https://decipher.industries)",
+  "license": "Apache-2.0",
+  "dependencies": {
+    "debug": "^4.1.1",
+    "n-readlines": "^1.0.0"
+  }
+}
